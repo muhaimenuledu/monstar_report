@@ -1,119 +1,184 @@
 <odoo>
-    <!-- Custom Invoice Template -->
+
+    <!-- =========================================================
+         Custom Invoice PDF Template
+         ========================================================= -->
     <template id="monstar_invoice_pdf">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <div class="page" style="font-family: Arial, sans-serif; font-size:13px; padding:20px 40px; margin:0;">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: Arial, sans-serif; font-size:13px; padding:20px 40px;">
 
-                    <!-- Header -->
-                    <h2 style="text-align:center; text-transform:uppercase; margin-bottom:15px;">Invoice</h2>
+                        <!-- Header -->
+                        <h2 style="text-align:center; text-transform:uppercase; margin:0 0 15px 0;">Invoice</h2>
 
-                    <!-- Top Layout: Left (Addresses) | Right (Invoice Info) -->
-                    <table style="width:100%; margin-bottom:20px; border-collapse:collapse;">
-                        <tr>
-                            <!-- Left Box -->
-                            <td style="width:60%; vertical-align:top; padding-right:10px;">
-                                <table style="width:100%; border:1px solid #000; border-collapse:collapse;">
-                                    <tr>
-                                        <td style="padding:8px; border-bottom:1px solid #000;">
-                                            <strong>From (Company):</strong><br/>
-                                            <span t-esc="doc.company_id.name"/><br/>
-                                            <span t-esc="doc.company_id.street"/><br/>
-                                            <span t-esc="doc.company_id.city"/> <span t-esc="doc.company_id.zip"/><br/>
-                                            <span t-esc="doc.company_id.country_id.name"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:8px; border-bottom:1px solid #000;">
-                                            <strong>Ship To (Delivery Address):</strong><br/>
-                                            <span t-esc="doc.partner_shipping_id.name or doc.partner_id.name"/><br/>
-                                            <span t-esc="doc.partner_shipping_id.street or doc.partner_id.street"/><br/>
-                                            <span t-esc="doc.partner_shipping_id.city or doc.partner_id.city"/> 
-                                            <span t-esc="doc.partner_shipping_id.zip or doc.partner_id.zip"/><br/>
-                                            <span t-esc="doc.partner_shipping_id.country_id.name or doc.partner_id.country_id.name"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:8px;">
-                                            <strong>Supplier / Vendor:</strong><br/>
-                                            <span t-esc="doc.partner_id.name"/><br/>
-                                            <span t-esc="doc.partner_id.street or ''"/><br/>
-                                            <span t-esc="doc.partner_id.city or ''"/> <span t-esc="doc.partner_id.zip or ''"/><br/>
-                                            <span t-esc="doc.partner_id.country_id.name or ''"/><br/>
-                                            <span t-esc="doc.partner_id.phone or ''"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
+                        <!-- Top Layout: Left (Addresses) | Right (Invoice Info) -->
+                        <table style="width:100%; margin-bottom:20px; border-collapse:collapse;">
+                            <tr>
+                                <!-- Left Box -->
+                                <td style="width:60%; vertical-align:top; padding-right:10px;">
+                                    <table style="width:100%; border:1px solid #000; border-collapse:collapse;">
+                                        <tr>
+                                            <td style="padding:8px; border-bottom:1px solid #000;">
+                                                <strong>From (Company):</strong><br/>
+                                                <span t-esc="doc.company_id.name"/><br/>
+                                                <span t-esc="doc.company_id.street or ''"/><br/>
+                                                <span t-esc="doc.company_id.city or ''"/>
+                                                <span t-esc="doc.company_id.zip or ''"/><br/>
+                                                <span t-esc="doc.company_id.country_id.name or ''"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:8px; border-bottom:1px solid #000;">
+                                                <strong>Ship To (Delivery Address):</strong><br/>
+                                                <span t-esc="(doc.partner_shipping_id.name or doc.partner_id.name)"/><br/>
+                                                <span t-esc="(doc.partner_shipping_id.street or doc.partner_id.street or '')"/><br/>
+                                                <span t-esc="(doc.partner_shipping_id.city or doc.partner_id.city or '')"/>
+                                                <span t-esc="(doc.partner_shipping_id.zip or doc.partner_id.zip or '')"/><br/>
+                                                <span t-esc="(doc.partner_shipping_id.country_id.name or doc.partner_id.country_id.name or '')"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:8px;">
+                                                <strong>Supplier / Vendor:</strong><br/>
+                                                <span t-esc="doc.partner_id.name"/><br/>
+                                                <span t-esc="doc.partner_id.street or ''"/><br/>
+                                                <span t-esc="doc.partner_id.city or ''"/>
+                                                <span t-esc="doc.partner_id.zip or ''"/><br/>
+                                                <span t-esc="doc.partner_id.country_id.name or ''"/><br/>
+                                                <span t-esc="doc.partner_id.phone or ''"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
 
-                            <!-- Right Box -->
-                            <td style="width:40%; vertical-align:top;">
-                                <table style="width:100%; border:1px solid #000; border-collapse:collapse;">
-                                    <tr>
-                                        <td style="padding:8px; border-bottom:1px solid #000;">
-                                            <strong>Invoice No:</strong><br/>
-                                            <span t-esc="doc.name"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:8px; border-bottom:1px solid #000;">
-                                            <strong>Date:</strong><br/>
-                                            <span t-esc="doc.invoice_date"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:8px;">
-                                            <strong>Other References:</strong><br/>
-                                            <span t-esc="doc.ref or ''"/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <!-- Lines -->
-                    <table style="width:100%; border-collapse:collapse; margin-bottom:15px;">
-                        <thead>
-                            <tr style="background-color:#f2f2f2;">
-                                <th style="border:1px solid #ccc; padding:5px;">Description of Goods</th>
-                                <th style="border:1px solid #ccc; padding:5px; text-align:center;">Quantity</th>
-                                <th style="border:1px solid #ccc; padding:5px; text-align:center;">Rate</th>
-                                <th style="border:1px solid #ccc; padding:5px; text-align:right;">Amount</th>
+                                <!-- Right Box -->
+                                <td style="width:40%; vertical-align:top;">
+                                    <table style="width:100%; border:1px solid #000; border-collapse:collapse;">
+                                        <tr>
+                                            <td style="padding:8px; border-bottom:1px solid #000;">
+                                                <strong>Invoice No:</strong><br/>
+                                                <span t-esc="doc.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:8px; border-bottom:1px solid #000;">
+                                                <strong>Date:</strong><br/>
+                                                <span t-esc="doc.invoice_date"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:8px;">
+                                                <strong>Other References:</strong><br/>
+                                                <span t-esc="doc.ref or ''"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr t-foreach="doc.invoice_line_ids" t-as="line">
-                                <td style="border:1px solid #ccc; padding:5px;" t-esc="line.product_id.display_name"/>
-                                <td style="border:1px solid #ccc; padding:5px; text-align:center;" t-esc="line.quantity"/>
-                                <td style="border:1px solid #ccc; padding:5px; text-align:center;" t-esc="line.price_unit"/>
-                                <td style="border:1px solid #ccc; padding:5px; text-align:right;" t-esc="line.price_subtotal"/>
+                        </table>
+
+                        <!-- Lines -->
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:15px;">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th style="border:1px solid #ccc; padding:5px;">Description of Goods</th>
+                                    <th style="border:1px solid #ccc; padding:5px; text-align:center;">Quantity</th>
+                                    <th style="border:1px solid #ccc; padding:5px; text-align:center;">Rate</th>
+                                    <th style="border:1px solid #ccc; padding:5px; text-align:right;">Amount</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td style="border:1px solid #ccc; padding:5px;">
+                                            <span t-esc="line.product_id.display_name"/>
+                                        </td>
+                                        <td style="border:1px solid #ccc; padding:5px; text-align:center;">
+                                            <span t-esc="line.quantity"/>
+                                        </td>
+                                        <td style="border:1px solid #ccc; padding:5px; text-align:center;">
+                                            <span t-esc="line.price_unit"/>
+                                        </td>
+                                        <td style="border:1px solid #ccc; padding:5px; text-align:right;">
+                                            <span t-esc="line.price_subtotal"/>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Negative Adjustment (same line) -->
+                                    <t t-if="line.price_subtotal &lt; 0">
+                                        <tr>
+                                            <td colspan="3" style="border:1px solid #ccc; padding:5px; text-align:right; color:red;">
+                                                Adjustment / Deduction
+                                            </td>
+                                            <td style="border:1px solid #ccc; padding:5px; text-align:right; color:red;">
+                                                <span t-esc="line.price_subtotal"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- =========================================================
+                             Totals + Paid/Credit Note breakdown (UI-like)
+                             ========================================================= -->
+                        <t t-set="paid_credit_lines" t-value="doc._get_report_paid_credit_lines()"/>
+
+                        <table style="width:100%; margin-bottom:10px; border-collapse:collapse;">
+                            <tr>
+                                <td style="text-align:right; padding:3px 0; color:#555;">Untaxed Amount:</td>
+                                <td style="text-align:right; padding:3px 0; width:180px;">
+                                    <span t-field="doc.amount_untaxed"
+                                          t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td>
                             </tr>
-                            <!-- Optional: Negative Adjustment -->
-                            <tr t-if="line.price_subtotal &lt; 0">
-                                <td colspan="3" style="border:1px solid #ccc; padding:5px; text-align:right; color:red;">Adjustment / Deduction</td>
-                                <td style="border:1px solid #ccc; padding:5px; text-align:right; color:red;" t-esc="line.price_subtotal"/>
+
+                            <tr>
+                                <td style="text-align:right; padding:3px 0; font-weight:bold;">Total:</td>
+                                <td style="text-align:right; padding:3px 0; width:180px; font-weight:bold;">
+                                    <span t-field="doc.amount_total"
+                                          t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td>
                             </tr>
-                        </tbody>
-                    </table>
 
-                    <!-- Totals -->
-                    <table style="width:100%; margin-bottom:20px;">
-                        <tr>
-                            <td style="text-align:right;"><strong>Total:</strong></td>
-                            <td style="text-align:right;" t-esc="doc.amount_total"/>
-                        </tr>
-                    </table>
+                            <!-- Paid / Credit Note lines -->
+                            <t t-if="paid_credit_lines">
+                                <t t-foreach="paid_credit_lines" t-as="p">
+                                    <tr>
+                                        <td style="text-align:right; padding:3px 0; color:#555;">
+                                            <span t-esc="p['label']"/>
+                                        </td>
+                                        <td style="text-align:right; padding:3px 0; width:180px;">
+                                            <span t-esc="p['amount']"
+                                                  t-options="{'widget': 'monetary', 'display_currency': p['currency']}"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
 
-                    <!-- Footer -->
-                    <p><strong>Authorized Signatory:</strong></p>
+                            <tr>
+                                <td style="text-align:right; padding-top:8px; font-weight:bold;">Amount Due:</td>
+                                <td style="text-align:right; padding-top:8px; width:180px; font-weight:bold;">
+                                    <span t-field="doc.amount_residual"
+                                          t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td>
+                            </tr>
+                        </table>
 
-                </div>
+                        <!-- Footer -->
+                        <p style="margin-top:20px;"><strong>Authorized Signatory:</strong></p>
+
+                    </div>
+                </t>
             </t>
         </t>
     </template>
 
-    <!-- Report Action -->
+    <!-- =========================================================
+         Report Action (bind to Invoice print menu)
+         ========================================================= -->
     <record id="action_report_monstar_invoice" model="ir.actions.report">
         <field name="name">Monstar Invoice</field>
         <field name="model">account.move</field>
@@ -123,4 +188,5 @@
         <field name="binding_type">report</field>
         <field name="print_report_name">'Invoice - %s' % (object.name)</field>
     </record>
+
 </odoo>
